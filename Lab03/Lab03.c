@@ -37,9 +37,8 @@ int main(int argc, char* argv[]) {
     // number of elements = total size of array / size of one element
     int length = sizeof(num_array) / sizeof(num_array[0]); 
 
-
+    int parent_sum = 0; // the summation of the parent processor
     int child_sum = 0; // the summation of the child processor
-    int parent_sum = 0;; // the summation of the parent processor
 
 
     if (process_id < 0) {
@@ -47,31 +46,34 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    if (process_id == 0) {
-        // child process -> multiply by 2
-        printf("Child Process Summation:\n");
+    // parent process ->  square the element
+    if (process_id > 0) {
+        wait(NULL);
+
+
+        printf("Parent Process:\n");
+        for (int i = 0; i < length; i++) {
+            // parent process ->  square the element
+            num_array[i] = num_array[i] * num_array[i];
+            parent_sum += num_array[i];
+            printf("num_array[%d] = %d\n", i, num_array[i]);
+        }
+        
+        printf("Parent sum = %d\n\n", parent_sum);
+    }
+    // child process -> multiply by 2
+    else {
+        printf("Child Process:\n");
         for (int i = 0; i < length; i++) {
             num_array[i] = num_array[i] * 2;
             child_sum += num_array[i];
             printf("num_array[%d] = %d\n", i, num_array[i]);
         }
-        printf("Sum = %d\n\n", child_sum);
-    } else {
-        // parent process ->  square the element
-        wait(NULL);
-        printf("Parent Process Summation:\n");
-        for (int i = 0; i < length; i++) {
-            num_array[i] = num_array[i] * num_array[i];
-            parent_sum += num_array[i];
-            printf("num_array[%d] = %d\n", i, num_array[i]);
-        }
-        printf("Sum = %d\n\n", parent_sum);
+        printf("Child sum = %d\n\n", child_sum);
     }
 
     // issues with the wait() if I try to print the sum here.
     //printf("Summation of child = %d\nSummation of parent = %d\n", child_sum, parent_sum);
-    
-    
 
     return 0;
     
