@@ -1,0 +1,43 @@
+// Lab 06
+
+// pthreads --> do some subroutine. they initialize / run a function
+create, join, exit
+
+pthread_wait() --> if a thread func/thread execs _wait(&cond, &mutex) --> it will wait on a condition
+when a broadcast/signal of &cond is received, then the thread will try to grab the mutex
+then it will enter the critical section.
+// any threads that do not have the lock can not work with specific code that is locked.
+// if multiple threads update on mem addres R/W at same time,
+// we lock access to datastructure (_DS) to update one at a time
+
+
+int pthread_cond_init(&condA) --> function to initialize conditionpthread_cond_t condA;
+pthread_cond_init(&condA); // condition not a signal but what is being send it will be a signal (a flag that will activate another set of code)
+
+int global_int = 15
+
+pthread_cond_wati(&cond, &mutex) // unlock that mutex and pause tha thread and once it gets the signal it will resume. --> puts us to wait state
+pthread_cond_signal -> signal will send out &cond to one or more threads (more likely to one thread.)
+pthread_cond_broadcast --. broadcast will send out &cond to every thread.
+--> send out &cond to threads (dont send out the mutex)
+
+
+// when my thread_function gets to a certain point, i want it to wait
+// rather than one by one release/grab/release/grab of mutex by threads
+// i want all of my threads to eventually pause at this one point condition the pause / wait on defined cond condA
+
+
+
+function () {
+    // pthread create, join, exit(optional)
+    // mutex&cond initializer & DStructs
+    pthread_cond_init()
+    mutex_init()
+
+    pthread_cond_wait
+    pthread_cond_broadcast
+
+    // to complete the task, the *musts* are broadcast and to wait on condition.
+
+    have a critical section, have a wait dependent on cond that only broadcast once *8very** thread is about to wait. Not at 8/10 or 9/10 wait but only 10/10
+}
