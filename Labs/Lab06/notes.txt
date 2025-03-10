@@ -1,5 +1,22 @@
 // Lab 06
 
+mutex lock / unlock
+
+mutex = mutual exclusion lock
+if a thread/proc is holding the mutex lock, it can enter critical section and do work. after work, it unlocks mutex
+if it does not have mutex, it waits. every once in a while will check if mutex is available. if so, take it and do work
+if another thread holds the mutex, second thread cannot grab it
+
+you are either holding the mutex or you are not.
+holding the mutex lets you access crit section and do work.
+
+arr[100]
+t0 = 0-24
+t1 = 25-49
+t2 = 50-74
+
+
+
 // pthreads --> do some subroutine. they initialize / run a function
 create, join, exit
 
