@@ -1,0 +1,55 @@
+mutexes - mutual exclusion lock
+0/1 physical lock key, that permitted access to a critical section.
+
+Reasons:
+- race condtions - we do not want multiple wrokers R/W/X from the same memory location at the same time (sync up changes to mem/DS)
+- semaphors - counting variable or abstract Data Type controls access to shared resources in concurrent system. synchronization, limiting access to resources / ciritical sections
+sem_t semaphore1; (counting variable)
+- 2 types of semaphors:
+i. binary semaphore [0/1]
+    - counter variable that oscillate between values 0 and 1
+    - if value is 1, we have access to critical section
+    - if value is 0, we cannot access, we wait until there is resource open.
+
+
+ii. counting semaphore [0/2+]
+    - example
+        -counting sem of 5
+        - start out at 5
+        - 1 resource taken
+        - --> 4 left
+        - another taken
+        - --> 3 left
+        - done w/critical section , release resource (++)
+        - 4 left ...
+    - benefits (real world cases instead of computing efficiency)
+    - presentation queue 
+        -structure to see how to load and unload from the queue
+
+- (we initialize semaphore like mutex or pid)
+sem_t sem1;
+// sem_init(pointer, pshared, unsigned value)
+// pointer-> will be the semaphor
+// pshared-> if we want to share between multiple processes
+// unsigned value -> MAX_RES (max resources )
+sem_init(&sem1m 0, MAX_RES);
+
+sem_wait() --> (--) decrement part // sort like a lock that will enter the critical sectoin
+sem_post() --> (++) increment part // will release that semaphore
+
+for example:
+mutex
+init the mutex
+mutex_lock --> try to grab resource. if open, grab it and use. if not, wait and keep tryign to grab resource
+mutex_unlock --> endo f critical section, we want to release the lock/resource for another to use.
+
+sample code for template format
+
+pritnf("hi")
+sem_wait(&sem_p2);
+// enter critical section
+printf("p2 output");
+// critical work
+sem_post(&semaphore)
+return 0;
+
