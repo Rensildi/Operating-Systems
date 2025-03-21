@@ -12,13 +12,13 @@
 
  void* routine(void* args) {
     // before waiting
-    prinf("(%d) Waiting in the login quque\n"m *(int*)args);
+    prinf("(%d) Waiting in the login queue\n", *(int*)args);
     // sem_wait is going to check the semaphore 0
     // if sem == 0 the thread will wait on that semaphore
     // if s > 0 (maybe 5) it will decrement and start exectuing
     sem_wait(&semaphore);
     printf("(%d) Logged in\n", *(int*)args);
-    sleep(rand() % 5 + 1);;
+    sleep(rand() % 5 + 1);
     printf("(%d) Logged out\n", *(int*)args);
     // sem_post increment the sem value.
     sem_post(&semaphore);
