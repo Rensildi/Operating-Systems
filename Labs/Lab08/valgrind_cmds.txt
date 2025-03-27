@@ -1,0 +1,4 @@
+valgrind --leak-check=full -v
+valgrind --leak-check=full --show-leak-kinds=all
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
+valgrind --track-origins=yes
