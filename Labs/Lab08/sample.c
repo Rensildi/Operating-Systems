@@ -18,31 +18,27 @@
 #include <math.h>
 #include <time.h>
 
-pthread_mutex_t pi_mutex;
-
 typedef struct{
   int arr_len;
 } args_struct;
 
 double g_PI = 0.0;
 
+pthread_mutex_t pi_mutex;
 
 void* monte_carlo(void* v_as) {
     args_struct* as = v_as;
     int arr_len     = (*as).arr_len;
     for (int i = 0; i < arr_len; i++) {
-        unsigned int seed = time(NULL) ^ pthread_self();
-        double random_x = rand_r(&seed) / (double)RAND_MAX;
-        double random_y = rand_r(&seed) / (double)RAND_MAX;
-        local_count += (random_x*random_x + random_y*random_y <= 1);
+        double random_x = rand()/(double)RAND_MAX;
+        double random_y = rand()/(double)RAND_MAX;
+
+        // lock and unlock the thread in g_PI calculation
+        pthread_mutex_lock(&pi_mutex);
+        g_PI += random_x*random_x + random_y*random_y <= 1;
+        pthread_mutex_unlock(&pi_mutex);
 
     }
-    // locking before modifyign pi
-    // unlocking after modifyign pi
-    pthread_mutex_lock(&pi_mutex);
-    g_PI += local_count;
-    pthread_mutex_unlock(&pi_mutex);
-
     pthread_exit(0);
 }
 
@@ -83,8 +79,9 @@ int main(int argc, char* argv[])
 
     printf("Pi is: %f\n", pi);
     free(args);
-    // destorying mutex
+
     pthread_mutex_destroy(&pi_mutex);
     return 0;
 }
+
 
